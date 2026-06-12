@@ -1,103 +1,169 @@
 # Smart Expense Journal
 
-A clean core Java expense journal with a polished Swing desktop UI and an optional console mode.
+A Core Java expense tracker with a clean desktop UI and an optional console mode.
+
+## Tech Used
+
+- Core Java
+- Swing UI
+- OOP and encapsulation
+- Collections: `ArrayList`, `HashMap`, `TreeMap`, `LinkedHashMap`
+- File handling with CSV text files
+- Exception handling and input validation
 
 ## Features
 
-- Add expense with date, category, amount, and note
-- List all expenses in a formatted desktop table
-- Search by keyword across id, date, category, amount, and note
-- Filter expenses by month
-- Show total spend, category totals, monthly totals, and highest expense
-- Delete expense by id with confirmation
-- Save and load expenses using a JSON-lines style text file
-- Input validation for menu choices, dates, months, amounts, ids, and notes
-- Optional console mode for terminal use
+- Add expense with date, category, amount, and note from a form
+- View expenses in a table
+- View all expenses in a formatted table
+- Edit an existing expense by ID
+- Delete expense by ID with confirmation
+- Search expense notes by keyword
+- Filter expenses by category
+- Filter expenses by month and year
+- Show total spending
+- Show category-wise spending summary
+- Show monthly spending summary
+- Show highest expense
+- Show recent 5 expenses
+- Set monthly budget and show warning when crossed
+- Export report to `expense_report.txt`
+- Data remains saved after closing the app
+- Handles missing or invalid data files safely
 
-## Requirements
-
-- Java 8 or newer
-- No external libraries
-
-## Run
-
-Run the desktop UI from the project root through the main file only:
-
-```bash
-java Main.java
-```
-
-Run the older console menu:
-
-```bash
-java Main.java console
-```
-
-## Desktop UI
-
-The desktop UI includes:
-
-- Add-expense form
-- Search field
-- Month filter using `yyyy-MM`
-- Expense table
-- Snapshot totals
-- Delete selected row
-- Save and reload actions
-
-## Console Menu
+## Folder Structure
 
 ```text
-1. Add Expense
-2. List All Expenses
-3. Search Expenses
-4. Filter By Month
-5. Show Totals
-6. Delete By Id
-7. Save Now
-8. Save And Exit
+SMART EXPENSE JOURNAL/
+  Main.java
+  Expense.java
+  ExpenseManager.java
+  FileHandler.java
+  InputHelper.java
+  ReportGenerator.java
+  data/
+    expenses.csv
+    budgets.csv
+  README.md
 ```
 
-## Sample Flow
+## How To Run
+
+Open terminal in the project folder.
+
+```powershell
+javac *.java
+java Main
+```
+
+This opens the desktop UI.
+
+For console mode:
+
+```powershell
+java Main console
+```
+
+Or double-click:
 
 ```text
-Choose an option: 1
-Date (yyyy-MM-dd, blank for today): 2026-06-12
-Category: Food
-Amount: 249.50
-Note: Lunch with friends
-
-Choose an option: 3
-Keyword: lunch
-
-Choose an option: 4
-Month (yyyy-MM): 2026-06
+RUN_APP.bat
 ```
 
-## Data File
+In VS Code:
 
-Expenses are saved in:
+1. Open the project folder.
+2. Open `Main.java`.
+3. Compile with `javac *.java`.
+4. Run with `java Main`.
+
+## UI
+
+The default UI has:
+
+- Expense form on the left
+- Expense table in the center
+- Search/category/month filters
+- Summary and budget panel
+- Add, edit, delete, save, reload, recent, and export buttons
+
+## Sample Console Output
 
 ```text
-src/main/resources/data/expenses.jsonl
+==============================================================================
+                            SMART EXPENSE JOURNAL
+                       Core Java Console Expense Tracker
+==============================================================================
+Total Expenses: 3      Total Spending: INR 1450.00
+------------------------------------------------------------------------------
+ 1. Add Expense
+ 2. View All Expenses
+ 3. Edit Expense
+ 4. Delete Expense
+ 5. Search Notes
+ 6. Filter By Category
+ 7. Filter By Month And Year
+ 8. View Spending Summary
+ 9. Recent 5 Expenses
+10. Set Monthly Budget
+11. Export Text Report
+12. Save And Exit
+------------------------------------------------------------------------------
+Choose option:
 ```
 
-Each line is a JSON-like object:
-
-```json
-{"id":1,"date":"2026-06-12","category":"FOOD","amount":"249.50","note":"Lunch with friends"}
-```
-
-## Package Structure
+Expense table:
 
 ```text
-com.smartexpensejournal
-  app
-  exception
-  io
-  model
-  repository
-  service
-  util
-  validation
+-----------------------------------------------------------------------------------------------
+ID    Date         Category                Amount  Note
+-----------------------------------------------------------------------------------------------
+1     2026-06-12   Food                INR 250.00  Lunch with friends
+2     2026-06-13   Travel              INR 900.00  Bus pass
+-----------------------------------------------------------------------------------------------
+Rows: 2
 ```
+
+## Class Explanation
+
+- `Main`: Runs the menu loop and connects user actions with the manager, file handler, and reports.
+- `Expense`: Model class that stores one expense with private fields and getters/setters.
+- `ExpenseManager`: Handles business logic like add, edit, delete, search, filter, summaries, recent expenses, and budgets.
+- `FileHandler`: Reads and writes expenses/budgets using CSV files and skips corrupted lines safely.
+- `InputHelper`: Handles user input validation so invalid input does not crash the program.
+- `ReportGenerator`: Prints tables/summaries and creates the export report text.
+
+## What I Learned
+
+- How to structure a Java console project using OOP.
+- How to use collections for fast lookup and reporting.
+- How to persist data using file handling.
+- How to validate user input safely.
+- How to separate UI, business logic, and file handling.
+
+## Interview Explanation
+
+Smart Expense Journal is a Core Java console project that helps users manage daily expenses. I used OOP by separating the project into classes like `Expense`, `ExpenseManager`, `FileHandler`, `InputHelper`, and `ReportGenerator`. Expenses are stored in an `ArrayList`, and a `HashMap` is used for quick search by ID during edit and delete operations. The app loads data once at startup from CSV files and saves only after add, edit, delete, or budget updates, which keeps it fast. It also supports filtering, summaries, budget warnings, and report export, so it demonstrates collections, file handling, validation, and clean Java design.
+
+## Possible Interview Questions
+
+**Q1. Why did you use `ArrayList`?**  
+I used `ArrayList` because expenses are mainly displayed, filtered, and iterated in order, and `ArrayList` is efficient for that.
+
+**Q2. Why did you use `HashMap`?**  
+I used `HashMap<Integer, Expense>` to find expenses quickly by ID while editing or deleting.
+
+**Q3. How is data saved?**  
+The app saves expenses in `data/expenses.csv` and monthly budgets in `data/budgets.csv`.
+
+**Q4. How do you handle invalid data?**  
+While loading CSV files, invalid or corrupted lines are skipped with a warning instead of crashing the app.
+
+**Q5. How did you improve performance?**  
+Data is loaded once at startup. File saving happens only after add, edit, delete, or budget changes. Sorted expense data is cached and rebuilt only when the list changes.
+
+**Q6. What OOP concepts are used?**  
+Encapsulation, class separation, object modeling, and single-responsibility style design.
+
+**Q7. What future improvements can be added?**  
+Authentication, charts, recurring expenses, category suggestions, backup files, and unit tests.
