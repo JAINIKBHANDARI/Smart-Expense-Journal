@@ -1,31 +1,51 @@
 # Smart Expense Journal
 
-Core Java console application for tracking expenses.
+A clean core Java expense journal with a polished Swing desktop UI and an optional console mode.
 
-## Project Status
-
-Structure only. Implementation code will be added later.
-
-## Planned Features
+## Features
 
 - Add expense with date, category, amount, and note
-- List all expenses
-- Search expenses by keyword
+- List all expenses in a formatted desktop table
+- Search by keyword across id, date, category, amount, and note
 - Filter expenses by month
-- Show category and monthly totals
-- Delete expense by id
-- Save and load data using a JSON-like text file
-- Validate console input
-- Simple command menu loop
+- Show total spend, category totals, monthly totals, and highest expense
+- Delete expense by id with confirmation
+- Save and load expenses using a JSON-lines style text file
+- Input validation for menu choices, dates, months, amounts, ids, and notes
+- Optional console mode for terminal use
 
-## Planned Run Steps
+## Requirements
+
+- Java 8 or newer
+- No external libraries
+
+## Run
+
+Run the desktop UI from the project root through the main file only:
 
 ```bash
-javac -d out src/main/java/com/smartexpensejournal/**/*.java
-java -cp out com.smartexpensejournal.Main
+java Main.java
 ```
 
-## Planned Sample Commands
+Run the older console menu:
+
+```bash
+java Main.java console
+```
+
+## Desktop UI
+
+The desktop UI includes:
+
+- Add-expense form
+- Search field
+- Month filter using `yyyy-MM`
+- Expense table
+- Snapshot totals
+- Delete selected row
+- Save and reload actions
+
+## Console Menu
 
 ```text
 1. Add Expense
@@ -33,23 +53,51 @@ java -cp out com.smartexpensejournal.Main
 3. Search Expenses
 4. Filter By Month
 5. Show Totals
-6. Delete Expense
-7. Save
-8. Exit
+6. Delete By Id
+7. Save Now
+8. Save And Exit
+```
+
+## Sample Flow
+
+```text
+Choose an option: 1
+Date (yyyy-MM-dd, blank for today): 2026-06-12
+Category: Food
+Amount: 249.50
+Note: Lunch with friends
+
+Choose an option: 3
+Keyword: lunch
+
+Choose an option: 4
+Month (yyyy-MM): 2026-06
+```
+
+## Data File
+
+Expenses are saved in:
+
+```text
+src/main/resources/data/expenses.jsonl
+```
+
+Each line is a JSON-like object:
+
+```json
+{"id":1,"date":"2026-06-12","category":"FOOD","amount":"249.50","note":"Lunch with friends"}
 ```
 
 ## Package Structure
 
 ```text
-src/main/java/com/smartexpensejournal
-src/main/java/com/smartexpensejournal/app
-src/main/java/com/smartexpensejournal/model
-src/main/java/com/smartexpensejournal/service
-src/main/java/com/smartexpensejournal/repository
-src/main/java/com/smartexpensejournal/io
-src/main/java/com/smartexpensejournal/validation
-src/main/java/com/smartexpensejournal/util
-src/main/java/com/smartexpensejournal/exception
-src/main/resources/data
-src/test/java/com/smartexpensejournal
+com.smartexpensejournal
+  app
+  exception
+  io
+  model
+  repository
+  service
+  util
+  validation
 ```

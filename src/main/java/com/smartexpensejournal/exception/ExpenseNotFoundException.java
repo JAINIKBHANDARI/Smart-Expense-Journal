@@ -1,1 +1,7 @@
-// Expense not found exception placeholder.
+package com.smartexpensejournal.exception;
+
+public class ExpenseNotFoundException extends RuntimeException {
+    public ExpenseNotFoundException(String message) {
+        super(message);
+    }
+}
