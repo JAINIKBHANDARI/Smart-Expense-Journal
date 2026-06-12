@@ -1,0 +1,1 @@
+// Invalid expense exception placeholder.

@@ -1,0 +1,1 @@
+// Console input validation placeholder.

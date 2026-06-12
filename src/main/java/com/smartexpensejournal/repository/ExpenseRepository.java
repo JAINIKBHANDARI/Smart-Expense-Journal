@@ -1,0 +1,1 @@
+// Expense repository contract placeholder.
