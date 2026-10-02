@@ -109,11 +109,19 @@ public class InputHelper {
 
     public String readRequiredText(String prompt, int maxLength) {
         while (true) {
-            String input = readText(prompt, maxLength);
-            if (!input.trim().isEmpty()) {
+            String input = readLine(prompt);
+            if (input == null) {
+                return "";
+            }
+            input = input.trim();
+            if (input.isEmpty()) {
+                System.out.println("[ERROR] This field cannot be empty.");
+                continue;
+            }
+            if (input.length() <= maxLength) {
                 return input;
             }
-            System.out.println("[ERROR] This field cannot be empty.");
+            System.out.println("[ERROR] Please keep it within " + maxLength + " characters.");
         }
     }
 

@@ -278,8 +278,29 @@ public class ExpenseJournalUI extends JFrame {
         addFull(budget, label("Month and year"), b, 1);
         JPanel monthYear = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         monthYear.setOpaque(false);
-        monthYear.add(new JComboBoxMirror(monthBox));
-        monthYear.add(new JLabel(yearField.getText()));
+        JLabel budgetMonthLabel = new JLabel(monthBox.getSelectedItem() != null ? monthBox.getSelectedItem().toString() : "");
+        budgetMonthLabel.setForeground(MUTED);
+        JLabel budgetYearLabel = new JLabel(yearField.getText().trim());
+        budgetYearLabel.setForeground(MUTED);
+        monthBox.addActionListener(event -> {
+            Object selected = monthBox.getSelectedItem();
+            if (selected != null) {
+                budgetMonthLabel.setText(selected.toString());
+            }
+        });
+        yearField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void update() {
+                budgetYearLabel.setText(yearField.getText().trim());
+            }
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
+        });
+        monthYear.add(budgetMonthLabel);
+        monthYear.add(budgetYearLabel);
         addFull(budget, monthYear, b, 2);
         addField(budget, "Budget Amount", budgetAmountField, b, 3);
         JButton setBudgetButton = button("Set Budget", true);
@@ -374,7 +395,7 @@ public class ExpenseJournalUI extends JFrame {
 
     private void setBudget() {
         try {
-            BigDecimal amount = new BigDecimal(budgetAmountField.getText().trim()).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal amount = new BigDecimal(budgetAmountField.getText().trim().replace(",", "")).setScale(2, RoundingMode.HALF_UP);
             if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new IllegalArgumentException("Budget amount must be greater than zero.");
             }
@@ -640,12 +661,5 @@ public class ExpenseJournalUI extends JFrame {
                     + java.time.Month.of(i + 1).name().substring(1).toLowerCase();
         }
         return months;
-    }
-
-    private static class JComboBoxMirror extends JLabel {
-        JComboBoxMirror(JComboBox<String> comboBox) {
-            super(comboBox.getSelectedItem().toString());
-            setForeground(MUTED);
-        }
     }
 }
